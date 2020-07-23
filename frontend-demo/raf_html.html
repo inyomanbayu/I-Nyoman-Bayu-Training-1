@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Front-end Testing</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        h1, h3 {
+            text-align: center;
+            font-family: Corbel, Calibri, serif;
+            position: relative;
+        }
+        input, button {
+            display: block;
+            margin: 10px auto;
+        }
+        .col, .col-sm {
+            border: 1px solid black;
+            border-radius: 5px;
+            box-shadow: 0 0 5px 0 black;
+            margin: 10px;
+            padding: 20px 0;
+        }
+        table {
+            width: 50%;
+            margin: auto;
+        }
+        td, th {
+            border: 1px solid black;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='row'>
+            <div class='col'>
+                <h1>Front-end Testing</h1>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm'>
+                <h3>Get all courses</h3>
+                <button onclick="getAllCourses()">Click me</button>
+            </div>
+            <div class='col-sm'>
+                <h3>Get a course</h3>
+                <input type='text' id='id_getCourse' placeholder="Course ID">
+                <button onclick='getACourse()'>Click me</button>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm'>
+                <h3>Create a course</h3>
+                <input type='text' id='id_createCourse' placeholder="Course Name">
+                <button onclick='createCourse()'>Click me</button>
+            </div>
+            <div class='col-sm'>
+                <h3>Update a course</h3>
+                <input type='text' id='id_updateCourse1' placeholder="Course ID">
+                <input type='text' id='id_updateCourse2' placeholder="New Course Name">
+                <button onclick='updateCourse();'>Click me</button>
+            </div>
+            <div class='col-sm'>
+                <h3>Delete a course</h3>
+                <input type='text' id='id_deleteCourse' placeholder="Course ID">
+                <button onclick='deleteCourse();'>Click me</button>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col'>
+                <table id='result'>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getAllCourses() {
+            var url  = "http://localhost:3000/api/courses";
+            var xhr  = new XMLHttpRequest();
+            var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+            xhr.open('GET', url, true);
+            xhr.onload = function() {
+                var courses = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    courses.forEach((val) => {
+                        content += "<tr><td>" + val.id + "</td><td>" + val.name + "</td></tr>";
+                    })
+                    document.getElementById('result').innerHTML = content;
+                } else {
+                    console.error(courses);
+                }
+            }
+            xhr.send(null);
+        }
+        function getACourse() {
+            var url  = "http://localhost:3000/api/courses/" + document.getElementById('id_getCourse').value;
+            var xhr  = new XMLHttpRequest();
+            var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+            xhr.open('GET', url, true);
+            xhr.onload = function() {
+                var course = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    content += "<tr><td>" + course.id + "</td><td>" + course.name + "</td></tr>";
+                    document.getElementById('result').innerHTML = content;
+                } else {
+                    console.error(users);
+                }
+            }
+            xhr.send(null);
+        }
+        function createCourse() {
+            var url = "http://localhost:3000/api/courses";
+            var data = {};
+            data.name = document.getElementById('id_createCourse').value;
+            var json = JSON.stringify(data);
+            var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function() {
+                var course = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    content += "<tr><td>" + course.id + "</td><td>" + course.name + "</td></tr>";
+                    document.getElementById('result').innerHTML = content;
+                } else {
+                    console.error(users);
+                }
+            }
+            xhr.send(json);
+        }
+        function updateCourse() {
+            var url = "http://localhost:3000/api/courses/" + document.getElementById('id_updateCourse1').value;
+            var data = {};
+            data.name = document.getElementById('id_updateCourse2').value;
+            var json = JSON.stringify(data);
+            var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('PUT', url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function() {
+                var course = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    content += "<tr><td>" + course.id + "</td><td>" + course.name + "</td></tr>";
+                    document.getElementById('result').innerHTML = content;
+                } else {
+                    console.error(users);
+                }
+            }
+            xhr.send(json);
+        }
+        function deleteCourse() {
+            var url = "http://localhost:3000/api/courses/" + document.getElementById('id_deleteCourse').value;
+            var content = "<tr><th>ID</th><th>Course Name</th></tr>";
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('DELETE', url, true);
+            xhr.onload = function() {
+                var course = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    content += "<tr><td>" + course.id + "</td><td>" + course.name + "</td></tr>";
+                    document.getElementById('result').innerHTML = content;
+                } else {
+                    console.error(users);
+                }
+            }
+            xhr.send(null);
+        }
+    </script>
+</body>
+</html>
