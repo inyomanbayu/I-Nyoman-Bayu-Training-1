@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 });
 
 const users = [
-    { id: 1, name: 'brainard', email: 'brai@gmail.com', password: 'brai1234' }
+    { id: 1, name: 'bayu', email: 'bayuinyoman@gmail.com', password: 'bayu1234' }
 ];
 
 app.get('/api/users', (req, res) => {
@@ -29,7 +29,7 @@ app.post('/api/users', (req, res) => {
 
     var datetime = new Date();
     console.log("\n"+datetime);
-    console.log("Incoming new POST HTTP request");
+    console.log("Incoming new POST HTTP request.");
     console.log(req.body);
 
     const {error} = verifyUser(req.body);
@@ -43,12 +43,12 @@ app.post('/api/users', (req, res) => {
 
         return res.status(400).json(jsonRespond);
     }
-    console.log('Validation success');
+    console.log('Validation success.');
 
-    console.log('Check existing email: '+req.body.email);
+    console.log('Check existing email: '+req.body.email+ '.');
     const check_user = users.find( u => u.email === req.body.email );
     if (check_user) {
-        console.log('Email: '+req.body.email+' is already registered');
+        console.log('Email: '+req.body.email+' is already registered.');
 
         var jsonRespond = {
             result: "",
@@ -83,13 +83,13 @@ app.get('/api/users/:email/:password', (req, res) => {
     // LOG TIME
     var datetime = new Date();
     console.log("\n"+datetime);
-    console.log("Incoming new GET HTTP request for LOGIN");
+    console.log("Incoming new GET HTTP request for LOGIN.");
     console.log(req.params);
 
     // VALIDATE
     const {error} = verifyUser(req.params);
     if (error) {
-        console.log('Validation error');
+        console.log('Validation error.');
 
         var jsonRespond = {
             result: "",
@@ -98,10 +98,10 @@ app.get('/api/users/:email/:password', (req, res) => {
 
         return res.status(400).json(jsonRespond);
     }
-    console.log('Validation success and accepted');
+    console.log('Validation success and accepted.');
 
     // CHECK IF THE EMAIL AND PASSWORD CORRECT
-    console.log('Check existing email: '+req.params.email+' and password: '+req.params.password);
+    console.log('Check existing email: '+req.params.email+' and password: '+req.params.password+ '.');
     const check_user = users.find( u => u.email === req.params.email && u.password === req.params.password );
     if (!check_user) {
         var error_message = 'Invalid login detail. Email or password is not correct.';
