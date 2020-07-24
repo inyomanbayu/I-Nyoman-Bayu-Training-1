@@ -17,10 +17,10 @@ const users = [
 ];
 
 const films = [
-    { id: 1, name: 'I Dream In Another Language'},
-    { id: 2, name: 'Benched'},
-    { id: 3, name: 'Whitney'},
-    { id: 4, name: 'Blindspotting'}
+    { id: 1, name: 'Ada Apa Dengan Cinta'},
+    { id: 2, name: 'Keluarga Cemara'},
+    { id: 3, name: 'Sebelum Iblis Menjemput'},
+    { id: 4, name: 'Dilan'}
 ];
 
 app.get("/api/films", (req, res) => {
