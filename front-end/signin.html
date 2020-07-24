@@ -88,6 +88,16 @@
 			login_password = document.getElementById("login-password").value;
 			var url = "http://localhost:3000/api/users/"+login_email+"/"+login_password;
 
+			if (!login_email) {
+				document.getElementById('registration_result').innerHTML = "Email cannot be empty."
+				return false;
+			}
+
+			if (!login_password) {
+				document.getElementById('registration_result').innerHTML = "Password cannot be empty."
+				return false;
+			}
+
 			var data = {};
 			data.email = login_email;
 			data.password = login_password;

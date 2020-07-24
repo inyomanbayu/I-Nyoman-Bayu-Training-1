@@ -91,6 +91,21 @@
 		regis_email = document.getElementById('regis-email').value;
 		regis_password = document.getElementById('regis-password').value;
 
+		if (!regis_name) {
+			document.getElementById('registration_result').innerHTML = "Name cannot be empty.";
+			return false;
+		}
+
+		if (!regis_email) {
+			document.getElementById('registration_result').innerHTML = "Email cannot be empty.";
+			return false;
+		}
+
+		if (!regis_password) {
+			document.getElementById('registration_result').innerHTML = "Password cannot be empty.";
+			return false;
+		}
+		
 			var url = "http://localhost:3000/api/users";
 			var data = {};
 			data.name = regis_name;
