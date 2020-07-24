@@ -194,3 +194,11 @@ function verifyUser(user) {
     });
     return schema.validate(user);
 }
+
+function validateFilm(film) {
+    const schema = Joi.object({
+        name: Joi.string().required()
+    });
+
+    return schema.validate(film);
+}
