@@ -16,6 +16,63 @@ const users = [
     { id: 1, name: 'bayu', email: 'bayuinyoman@gmail.com', password: 'bayu1234' }
 ];
 
+const films = [
+    { id: 1, name: 'I Dream In Another Language'},
+    { id: 2, name: 'Benched'},
+    { id: 3, name: 'Whitney'},
+    { id: 4, name: 'Blindspotting'}
+];
+
+app.get("/api/films", (req, res) => {
+    var datetime = new Date();
+    console.log("\n"+datetime);
+    return res.json(films);
+});
+
+app.get('/api/films/:id', (req, res) => {
+    const film = films.find( f => f.id === parseInt(req.params.id) );
+    if (!film) return res.status(404).send('ID not found.');
+    return res.json(film);
+})
+
+app.post('/api/films', (req, res) => {
+    const {error} = validateFilm(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+
+    const film = {
+        id: films.length + 1,
+        name: req.body.name
+    };
+    films.push(film);
+    console.log('Insert Success');
+    return res.json(film);
+});
+
+app.put('/api/films/:id', (req, res) => {
+    const {error} = validateFilm(req.body);
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+    const film = films.find( f => f.id === parseInt(req.params.id) );
+    if (!film) return res.status(404).send('ID not found.');
+
+    film.name = req.body.name;
+    console.log('Update Success');
+    return res.json(film);
+});
+
+app.delete('/api/films/:id', (req, res) => {
+    const film = films.find( f => f.id === parseInt(req.params.id) );
+    if (!film) return res.status(404).send('ID not found.');
+
+    const index = films.indexOf(film);
+    films.splice(index, 1);
+    console.log('Delete Success');
+    return res.json(film);
+});
+
 app.get('/api/users', (req, res) => {
 
     var datetime = new Date();

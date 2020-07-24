@@ -148,26 +148,27 @@
 		<!-- details content -->
 		<div class="container">
 			<div class="row">
-				<!-- title -->
+				<input type="text" id="movies-id" placeholder="Movie Id">
+				<button onclick="getMovieDetail();" style="background-color: floralwhite">Search</button>
+				<div id="result-search"></div>
+					<!--
 				<div class="col-12">
 					<h1 class="section__title">I Dream in Another Language</h1>
 				</div>
-				<!-- end title -->
 
-				<!-- content -->
 				<div class="col-12 col-lg-6">
 					<div class="card card--details">
 						<div class="row">
-							<!-- card cover -->
+
 							<div class="col-12 col-sm-5 col-lg-6 col-xl-5">
 								<div class="card__cover">
 									<img src="img/covers/cover.jpg" alt="">
 									<span class="card__rate card__rate--green">8.4</span>
 								</div>
 							</div>
-							<!-- end card cover -->
+							 -->
 
-							<!-- card content -->
+							<!--
 							<div class="col-12 col-sm-7 col-lg-6 col-xl-7">
 								<div class="card__content">
 									<ul class="card__meta">
@@ -184,33 +185,28 @@
 									</div>
 								</div>
 							</div>
-							<!-- end card content -->
-						</div>
+							-->
 					</div>
 				</div>
 				<!-- end content -->
 
-				<!-- player -->
+				<!--
 				<div class="col-12 col-lg-6">
 					<video controls crossorigin playsinline poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
-						<!-- Video files -->
+
 						<source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" size="576">
 						<source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4" type="video/mp4" size="720">
 						<source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4" type="video/mp4" size="1080">
 
-						<!-- Caption files -->
+
 						<track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
 						    default>
 						<track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
 
-						<!-- Fallback for browsers that don't support the <video> element -->
 						<a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>
 					</video>
 				</div>
-				<!-- end player -->
-			</div>
-		</div>
-		<!-- end details content -->
+				-->
 	</section>
 	<!-- end details -->
 
@@ -734,5 +730,23 @@
 	<script src="js/photoswipe.min.js"></script>
 	<script src="js/photoswipe-ui-default.min.js"></script>
 	<script src="js/main.js"></script>
+
+	<script>
+		function getMovieDetail() {
+			var url  = "http://localhost:3000/api/films/" + document.getElementById('movies-id').value;
+			var xhr  = new XMLHttpRequest();
+			var content = 'ID '+' Movie Name';
+			xhr.open('GET', url, true);
+			xhr.onload = function() {
+				var film = JSON.parse(xhr.responseText);
+				if (xhr.readyState == 4 && xhr.status == "200") {
+					content += film.id + film.name ;
+					document.getElementById('result-search').innerHTML += "<div>ID: " + film.id + " -- NAME: " + film.name + "</div>";				} else {
+					console.error(users);
+				}
+			}
+			xhr.send(null);
+		}
+	</script>
 </body>
 </html>
