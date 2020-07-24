@@ -290,11 +290,11 @@
 
 <!-- catalog -->
 <button onclick="getAllFilms();" class="filter__btn">Show All Movies</button>
-<div id="show-films" class="catalog">
+<div id="show-films" style="margin-bottom:15px;color:grey;" class="catalog">
 	<div class="container">
 		<div class="row">
 
-			<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+			<!--<div class="col-6 col-sm-4 col-md-3 col-xl-2">
 				<div class="card">
 					<div class="card__cover">
 						<img src="img/covers/cover.jpg" alt="">
@@ -368,7 +368,7 @@
 							</span>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 </div>
@@ -870,6 +870,7 @@
 		var xhr  = new XMLHttpRequest()
 		xhr.open('GET', url, true)
 		xhr.onload = function () {
+			console.log(xhr.responseText);
 			var films = JSON.parse(xhr.responseText);
 			if (xhr.readyState == 4 && xhr.status == "200") {
 				console.table(films);

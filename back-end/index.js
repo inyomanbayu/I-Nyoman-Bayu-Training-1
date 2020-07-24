@@ -26,51 +26,144 @@ const films = [
 app.get("/api/films", (req, res) => {
     var datetime = new Date();
     console.log("\n"+datetime);
-    return res.json(films);
+    //return res.json(films);
+    console.log('Get all film data success.');
+    return res.status(200).json(films);
 });
 
-app.get('/api/films/:id', (req, res) => {
-    const film = films.find( f => f.id === parseInt(req.params.id) );
-    if (!film) return res.status(404).send('ID not found.');
-    return res.json(film);
+app.get('/api/films/:name', (req, res) => {
+    var datetime = new Date();
+    console.log("\n"+datetime);
+    console.log("Incoming new GET HTTP request.");
+    console.log(req.params);
+
+    const film = films.find( f => f.name === req.params.name);
+    if (!film) {
+        //return res.status(404).send('Name not found.');
+        var error_message = 'Film ' +req.params.name+ ' not found.\n';
+        console.log(error_message);
+
+        var jsonRespond = {
+            result: "",
+            message: error_message
+        }
+        return res.status(404).json(jsonRespond);
+    }
+    //return res.json(film);
+    console.log('Film ' +req.params.name+ ' found.\n');
+    return res.status(200).json(film);
 })
 
 app.post('/api/films', (req, res) => {
+    var datetime = new Date();
+    console.log("\n"+datetime);
+    console.log("Incoming new POST HTTP request.");
+    console.log(req.body);
+
     const {error} = validateFilm(req.body);
     if (error) {
-        return res.status(400).send(error.details[0].message);
+        console.log('Validation error');
+        
+        var jsonRespond = {
+            result: "",
+            message: error.details[0].message
+        }
+
+        return res.status(400).json(jsonRespond);
     }
+
+    console.log('Validation success.');
 
     const film = {
         id: films.length + 1,
         name: req.body.name
     };
+    
     films.push(film);
-    console.log('Insert Success');
-    return res.json(film);
+    console.log('Film name ' +req.body.name+ ' successfully stored.');
+
+    var jsonRespond = {
+        result: film,
+        message: "Film name " +req.body.name+ " Successfully stored."
+    }
+    //return res.json(film);
+    return res.status(200).json(jsonRespond);
 });
 
 app.put('/api/films/:id', (req, res) => {
+    var datetime = new Date();
+    console.log("\n"+datetime);
+    console.log("Incoming new PUT HTTP request.");
+    console.log(req.body);
+
+    const film = films.find( f => f.id === parseInt(req.params.id) );
+    if (!film) {
+        var error_message = 'ID ' +req.params.id+ ' not found.';
+        console.log(error_message);
+
+        var jsonRespond = {
+            result: "",
+            message: error_message
+        }
+
+        return res.status(404).json(jsonRespond);
+    }
+    
     const {error} = validateFilm(req.body);
     if (error) {
-        return res.status(400).send(error.details[0].message);
+        console.log('Validation error.');
+
+        var jsonRespond = {
+            result: "",
+            message: error.details[0].message
+        }
+
+        return res.status(400).json(jsonRespond);
     }
-    const film = films.find( f => f.id === parseInt(req.params.id) );
-    if (!film) return res.status(404).send('ID not found.');
+
+    console.log('Validation success.');
 
     film.name = req.body.name;
-    console.log('Update Success');
-    return res.json(film);
+    console.log('Film ID ' +req.params.id+ ' successfully updated.\n');
+    //return res.json(film);
+
+    var jsonRespond = {
+        result: film,
+        message: "Film ID " +req.params.id+ ' successfully updated.'
+    }
+
+    return res.status(200).json(jsonRespond);
 });
 
 app.delete('/api/films/:id', (req, res) => {
+    var datetime = new Date();
+    console.log("\n"+datetime);
+    console.log("Incoming new DELETE HTTP request.");
+    console.log(req.params);
+
     const film = films.find( f => f.id === parseInt(req.params.id) );
-    if (!film) return res.status(404).send('ID not found.');
+    if (!film) {
+        var error_message = 'Film ID ' +req.params.id+ ' not found.'
+        console.log(error_message);
+
+        var jsonRespond = {
+            result: "",
+            message: error_message
+        }
+
+        return res.status(404).json(jsonRespond);
+    }
 
     const index = films.indexOf(film);
     films.splice(index, 1);
-    console.log('Delete Success');
-    return res.json(film);
+    console.log('Film ID ' +req.params.id+ ' successfully deleted.\n');
+
+    var jsonRespond = {
+        result: film,
+        message: 'Film ID ' +req.params.id+ ' successfully deleted.'
+    }
+    //return res.json(film);
+    return res.status(200).json(jsonRespond);
 });
 
 app.get('/api/users', (req, res) => {

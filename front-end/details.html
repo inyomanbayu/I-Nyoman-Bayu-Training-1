@@ -150,7 +150,7 @@
 			<div class="row">
 				<input type="text" id="movies-id" placeholder="Movie Id">
 				<button onclick="getMovieDetail();" style="background-color: floralwhite">Search</button>
-				<div id="result-search"></div>
+				<!--<div id="result-search" style="background-color: white;"></div>-->
 					<!--
 				<div class="col-12">
 					<h1 class="section__title">I Dream in Another Language</h1>
@@ -186,8 +186,9 @@
 								</div>
 							</div>
 							-->
-					</div>
-				</div>
+			</div>
+			<div id="result-search" style="margin-bottom:15px;color:grey;"></div>
+		</div>
 				<!-- end content -->
 
 				<!--
@@ -738,11 +739,14 @@
 			var content = 'ID '+' Movie Name';
 			xhr.open('GET', url, true);
 			xhr.onload = function() {
+				console.log(xhr.responseText);
 				var film = JSON.parse(xhr.responseText);
 				if (xhr.readyState == 4 && xhr.status == "200") {
 					content += film.id + film.name ;
-					document.getElementById('result-search').innerHTML += "<div>ID: " + film.id + " -- NAME: " + film.name + "</div>";				} else {
-					console.error(users);
+					document.getElementById('result-search').innerHTML += "<div>ID: " + film.id + " -- NAME: " + film.name + "</div>";				
+				} else {
+					console.error(film);
+					document.getElementById('result-search').innerHTML = film.message;
 				}
 			}
 			xhr.send(null);
